@@ -2,48 +2,59 @@
 """Script for Task 1."""
 from matplotlib import pyplot as plt
 import numpy as np
-import femm
+import femm  # type: ignore
+
+from lib import setup_femm, cleanup_femm
 
 
 if __name__ == "__main__":
-    femm.openfemm(1)
-    femm.opendocument("Antunes.FEM")
+    out = setup_femm()
 
-    femm.mi_saveas("temp.fem")
-
+    # Setting current to 0
     femm.mi_modifycircprop("A", 1, 0)
     femm.mi_modifycircprop("B", 1, 0)
     femm.mi_modifycircprop("C", 1, 0)
 
-    RPM = 360 / 60
-    DT = 5e-6
+    RPM = 1500
+    OMEGA = RPM * 360 / 60
+    DT = 1 / OMEGA
     DTTA = 2000.0 * RPM * DT
 
-    coggingtorque: list[float] = []
-    aflux: list[float] = []
-    bflux = []
-    cflux = []
-    tt = []
-    DTTA = 0.06
-    n = round(120 / DTTA)
-    for k in range(n):
+    DTTA = 20
+    N = round(120 / DTTA)
+    N = 360
+
+    # Allocating Arrays
+    coggingtorque = np.zeros(N, float)
+    aflux = np.zeros(N, float)
+    bflux = np.zeros(N, float)
+    cflux = np.zeros(N, float)
+    tt = np.zeros(N, float)
+
+    for k in range(N):
+        print(f"Angle: {k}")
+
         tta = DTTA * k
         t = DT * k
-        femm.mi_modifyboundprop("mySlidingBand", 10, tta)
         femm.mi_analyze(1)
         femm.mi_loadsolution()
-        tq = femm.mo_gapintegral("mySlidingBand", 0)
-        tt = [tt, t]
-        coggingtorque = [coggingtorque, tq]
-        circpropsA = femm.mo_getcircuitproperties("A")
-        circpropsB = femm.mo_getcircuitproperties("B")
-        circpropsC = femm.mo_getcircuitproperties("C")
-        aflux = [aflux, circpropsA(3)]
-        bflux = [bflux, circpropsB(3)]
-        cflux = [cflux, circpropsC(3)]
+        femm.mo_groupselectblock(1)
+        tq = femm.mo_blockintegral(21)
+        tt[k] = t
+        coggingtorque[k] = tq
+        circpropsA: list[float] = femm.mo_getcircuitproperties("A")
+        circpropsB: list[float] = femm.mo_getcircuitproperties("B")
+        circpropsC: list[float] = femm.mo_getcircuitproperties("C")
+        aflux[k] = circpropsA[2]
+        bflux[k] = circpropsB[2]
+        cflux[k] = circpropsC[2]
+
+        # Preparing for next step
         femm.mo_close()
-        if (k % 100) == 0:
-            print(f"{k} :: {n}")
+        femm.mi_selectgroup(1)
+        femm.mi_moverotate(0, 0, 1)
+
+    cleanup_femm(out)
 
     plt.figure(1)
     plt.plot(tt, coggingtorque)
@@ -54,7 +65,7 @@ if __name__ == "__main__":
     va = 8 * np.diff(aflux) / DT
     vb = 8 * np.diff(bflux) / DT
     vc = 8 * np.diff(cflux) / DT
-    td = tt(range(2, len(tt))) - DT / 2
+    td = tt[1:len(tt)] - DT / 2
     plt.plot(td, va, td, vb, td, vc)
     plt.xlabel("Time, Seconds")
     plt.ylabel("Phase-to-Neutral Voltage")
@@ -64,3 +75,4 @@ if __name__ == "__main__":
     plt.plot(td, vll)
     plt.xlabel("Time, Seconds")
     plt.ylabel("Line-to-Line Voltage")
+    plt.show()
