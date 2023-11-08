@@ -2,7 +2,7 @@
 """Document creation and setup"""
 import math
 
-import femm
+import femm  # type: ignore
 
 
 def add_label(
@@ -69,12 +69,14 @@ if __name__ == "__main__":
     femm.mi_selectarcsegment(0, -62.5)
     femm.mi_setarcsegmentprop(5, "Boundary", 0, 0)
     femm.mi_clearselected()
+    femm.mi_selectcircle(0, 0, 24.5, 4)
+    femm.mi_setgroup(1)
 
     # Adding Materials
     # Rotor Inner
-    add_label(0, 0, STEEL_1018)
+    add_label(0, 0, STEEL_1018, group=1)
     # Rotor Outer
-    add_label(0, 16.25, STEEL_M19)
+    add_label(0, 16.25, STEEL_M19, group=1)
     # Air Gap
     add_label(0, 24.5, AIR)
     # Magnets
@@ -82,7 +84,7 @@ if __name__ == "__main__":
     for i in range(4):
         x_val = 22 * cosd(i * 90 + 45)
         y_val = 22 * sind(i * 90 + 45)
-        add_label(x_val, y_val, N42, magdir=magdirs[i])
+        add_label(x_val, y_val, N42, magdir=magdirs[i], group=1)
     # Stator Radius
     add_label(0, 46.5, STEEL_M19)
     # Outer Cage Radius
@@ -101,4 +103,4 @@ if __name__ == "__main__":
 
     # Document saving
     femm.mi_saveas("../cw1.fem")
-    # closefemm()
+    femm.closefemm()
