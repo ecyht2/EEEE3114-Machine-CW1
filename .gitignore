@@ -2,6 +2,10 @@
 cw1.fem
 *.ans
 
+# Results
+*.csv
+*.pdf
+
 # ---> Python
 # Byte-compiled / optimized / DLL files
 __pycache__/
