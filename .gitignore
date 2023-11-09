@@ -4,6 +4,7 @@ cw1.fem
 
 # Results
 *.csv
+/dist
 
 # ---> Python
 # Byte-compiled / optimized / DLL files

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test script."""
 import csv
-import math
+import os
 from dataclasses import dataclass
 from multiprocessing import Process, Queue
 
@@ -23,7 +23,7 @@ class TaskData:
     cflux: float
 
 
-@femm_handler()
+@femm_handler("../dist/cw1.fem")
 def task_1_2(initial_angle: int, count: int, out: Queue):
     """Function to get data for Task 1 and 2.
 
@@ -98,8 +98,9 @@ if __name__ == "__main__":
 
     plt.figure(1)
     plt.plot(tt, coggingtorque)
-    plt.xlabel("Time, Seconds")
+    plt.xlabel("Angle, °")
     plt.ylabel("Cogging Torque, N*m")
+    plt.title("Cogging Torque")
 
     plt.figure(2)
     va = np.diff(aflux) / DT
@@ -109,21 +110,24 @@ if __name__ == "__main__":
     plt.plot(td, va, td, vb, td, vc)
     plt.xlabel("Time, Seconds")
     plt.ylabel("Phase-to-Neutral Voltage")
+    plt.title("Phase Voltage")
 
     plt.figure(3)
     vll = va - vc
     plt.plot(td, vll)
     plt.xlabel("Time, Seconds")
     plt.ylabel("Line-to-Line Voltage")
+    plt.title("Line-to-Line Voltage")
     plt.show()
 
-    with open("task_1.csv", "w", encoding="utf-8") as file:
+    os.makedirs("../dist", exist_ok=True)
+    with open("../dist/task_1.csv", "w", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Angle", "Cogging Torque"])
         csv_array = np.transpose(np.array([tt, coggingtorque]))
         writer.writerows(csv_array)
 
-    with open("task_2.csv", "w", encoding="utf-8") as file:
+    with open("../dist/task_2.csv", "w", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Time", "Va", "Vb", "Vc", "Vll"])
         csv_array = np.transpose(np.array([td, va, vb, vc, vll]))

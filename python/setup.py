@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Document creation and setup"""
 import math
+import os
 
 import femm  # type: ignore
 
@@ -39,6 +40,7 @@ if __name__ == "__main__":
     )
     femm.newdocument(0)
     femm.mi_probdef(None, "millimeters", "planar", None, 100)
+    femm.smartmesh(0)
 
     # Importing
     femm.mi_readdxf("../cw.dxf")
@@ -102,5 +104,6 @@ if __name__ == "__main__":
         add_label(x_val, y_val, COPPER, circ=circuits[index], turns=MULTIPLIER * 40)
 
     # Document saving
-    femm.mi_saveas("../cw1.fem")
+    os.makedirs("../dist", exist_ok=True)
+    femm.mi_saveas("../dist/cw1.fem")
     femm.closefemm()
