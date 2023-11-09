@@ -38,7 +38,7 @@ def cleanup_femm(femm_file: str):
     os.remove(femm_file)
 
 
-def femm_handler(femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
+def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
     """Function decorator to handle FEMM in a seperate instance."""
     def custom_handler(func: Callable):
         @wraps(func)
@@ -52,7 +52,7 @@ def femm_handler(femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
                     winepath=wine_dir,
                     femmpath=dirname,
                 )
-                femm.opendocument("../cw1.fem")
+                femm.opendocument(document)
 
                 with tempfile.NamedTemporaryFile(suffix=".fem", dir=dirname) as file:
                     file.close()
