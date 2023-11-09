@@ -38,7 +38,7 @@ if __name__ == "__main__":
         femmpath="/home/user/.local/share/wineprefixes/default/drive_c/femm42/bin/",
     )
     femm.newdocument(0)
-    femm.mi_probdef(None, "millimeters")
+    femm.mi_probdef(None, "millimeters", "planar", None, 100)
 
     # Importing
     femm.mi_readdxf("../cw.dxf")
