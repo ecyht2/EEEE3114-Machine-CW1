@@ -10,7 +10,7 @@ import femm  # type: ignore
 import matplotlib.pyplot as plt
 import numpy as np
 
-from lib import femm_handler
+from lib import femm_handler, DT, OMEGA
 
 
 @dataclass
@@ -79,10 +79,6 @@ if __name__ == "__main__":
 
     for process in processes:
         process.join()
-
-    RPM = 1500
-    OMEGA = RPM * 360 / 60
-    DT = 1 / OMEGA
 
     tt = np.zeros(360)
     aflux = np.zeros(360)

@@ -14,6 +14,10 @@ import femm  # type: ignore
 FEMM_DIR = "/home/user/.local/share/wineprefixes/default/drive_c/femm42/bin/"
 WINE_DIR = "/usr/bin/wine"
 
+RPM = 1500
+OMEGA = RPM * 360 / 60
+DT = 1 / OMEGA
+
 
 def setup_femm() -> str:
     """Starts a new FEMM simulation."""
