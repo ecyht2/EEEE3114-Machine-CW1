@@ -3,6 +3,7 @@
 import shutil
 import tempfile
 import os
+import logging
 
 from functools import wraps
 from typing import Callable, Any
@@ -40,12 +41,17 @@ def cleanup_femm(femm_file: str):
 
 def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
     """Function decorator to handle FEMM in a seperate instance."""
+    logging.debug("Starting FEMM using: %s", document)
+    logging.debug("FEMM Directory: %s", femm_dir)
+    logging.debug("Using wine binary: %s", wine_dir)
+
     def custom_handler(func: Callable):
         @wraps(func)
         def wrapper(*args, **kwargs):
             os.environ["WINEDEBUG"] = "-all"
             with tempfile.TemporaryDirectory() as dirname:
                 shutil.copytree(femm_dir, dirname, dirs_exist_ok=True)
+                logging.debug("Using FEMM Thread Dir: %s", dirname)
 
                 # Setup FEMM instance
                 femm.openfemm(
@@ -57,12 +63,14 @@ def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_D
                 with tempfile.NamedTemporaryFile(suffix=".fem", dir=dirname) as file:
                     file.close()
                     femm.mi_saveas(file.name)
+                    logging.debug("Using Temporary File: %s", file.name)
 
                 # Running decorated function
                 value = func(*args, **kwargs)
 
                 # Closing FEMM instance
                 femm.closefemm()
+                logging.debug("Exiting FEMM")
                 return value
         return wrapper
     return custom_handler
