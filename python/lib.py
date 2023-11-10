@@ -43,6 +43,14 @@ def cleanup_femm(femm_file: str):
     os.remove(femm_file)
 
 
+def extract_queue(queue: Queue) -> np.ndarray:
+    """Extracts all the data from the queue."""
+    array = np.empty(queue.qsize(), dtype=None)
+    for i in range(queue.qsize()):
+        array[i] = queue.get()
+    return array
+
+
 def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
     """Function decorator to handle FEMM in a seperate instance."""
     logging.debug("Starting FEMM using: %s", document)
