@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
 """Shared library code for all the scripts."""
+import multiprocessing
+import os
 import shutil
 import tempfile
-import os
-import logging
-
 from functools import wraps
-from typing import Callable, Any
 from multiprocessing import Process, Queue
+from typing import Any, Callable
 
 import femm  # type: ignore
+import numpy as np
 
 FEMM_DIR = "/home/user/.local/share/wineprefixes/default/drive_c/femm42/bin/"
 WINE_DIR = "/usr/bin/wine"
 
-RPM = 1500
-OMEGA = RPM * 360 / 60
-DT = 1 / OMEGA
+RPM = 1500                  # Mechanical RPM
+OMEGA = RPM * 360 / 60      # Mechanical °/sec
+DT = 1 / OMEGA              # Mechanical sec/°
+RPM_E = 24 * RPM            # Electrical RPM
+OMEGA_E = 24 * OMEGA        # Electrical °/sec
+EDT = 1 / OMEGA_E           # Electrical sec/°
 
 
 def setup_femm() -> str:
@@ -52,10 +55,17 @@ def extract_queue(queue: Queue) -> np.ndarray:
 
 
 def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
-    """Function decorator to handle FEMM in a seperate instance."""
-    logging.debug("Starting FEMM using: %s", document)
-    logging.debug("FEMM Directory: %s", femm_dir)
-    logging.debug("Using wine binary: %s", wine_dir)
+    """Function decorator to handle FEMM in a seperate instance.
+
+    :param document: The document to open in FEMM.
+    :param femm_dir: The location of the FEMM binary.
+    :param wine_dir: The location of the wine runtime binary.
+    :returns: Wrapped function.
+    """
+    logger = multiprocessing.get_logger()
+    logger.debug("Starting FEMM using: %s", document)
+    logger.debug("FEMM Directory: %s", femm_dir)
+    logger.debug("Using wine binary: %s", wine_dir)
 
     def custom_handler(func: Callable):
         @wraps(func)
@@ -63,7 +73,7 @@ def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_D
             os.environ["WINEDEBUG"] = "-all"
             with tempfile.TemporaryDirectory() as dirname:
                 shutil.copytree(femm_dir, dirname, dirs_exist_ok=True)
-                logging.debug("Using FEMM Thread Dir: %s", dirname)
+                logger.debug("Using FEMM Thread Dir: %s", dirname)
 
                 # Setup FEMM instance
                 femm.openfemm(
@@ -75,14 +85,14 @@ def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_D
                 with tempfile.NamedTemporaryFile(suffix=".fem", dir=dirname) as file:
                     file.close()
                     femm.mi_saveas(file.name)
-                    logging.debug("Using Temporary File: %s", file.name)
+                    logger.debug("Using Temporary File: %s", file.name)
 
                 # Running decorated function
                 value = func(*args, **kwargs)
 
                 # Closing FEMM instance
                 femm.closefemm()
-                logging.debug("Exiting FEMM")
+                logger.debug("Exiting FEMM")
                 return value
         return wrapper
     return custom_handler
@@ -106,7 +116,7 @@ class FEMMWorker(Process):
         femm_dir = "/home/user/.local/share/wineprefixes/default/drive_c/femm42/bin/"
         os.environ["WINEDEBUG"] = "-all"
 
-        # pytlint: disable = consider-using-with
+        # pylint: disable = consider-using-with
         self.dirname = tempfile.TemporaryDirectory()
         shutil.copytree(femm_dir, self.dirname.name, dirs_exist_ok=True)
 

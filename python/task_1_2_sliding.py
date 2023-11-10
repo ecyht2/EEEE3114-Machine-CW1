@@ -152,9 +152,9 @@ if __name__ == "__main__":
     freq = np.fft.helper.fftfreq(coggingtorque.size, DT)
     index = np.argmax(fft)
     f = freq[index]
-    angle_f = OMEGA * f**-1
+    angle_period = OMEGA * f**-1
     with open("../dist/task_1.txt", "w", encoding="utf-8") as file:
-        output = f"Cogging Troque Frequency: {angle_f}"
+        output = f"Cogging Troque Period: {angle_period}"
         file.write(output)
         logging.info(output)
 
