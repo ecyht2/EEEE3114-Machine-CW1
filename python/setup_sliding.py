@@ -108,8 +108,8 @@ if __name__ == "__main__":
     add_label(24.8 * cosd(45), 24.8 * sind(45), AIR)
     add_label(22 * cosd(15), 22 * sind(15), AIR)
     # Magnets
-    x_val = 22 * cosd(45)
-    y_val = 22 * sind(45)
+    x_val = 22 * cosd(52.5)
+    y_val = 22 * sind(52.5)
     add_label(x_val, y_val, N42, magdir=45, group=1)
     # Stator Radius
     add_label(46.5 * cosd(45), 46.5 * sind(45), STEEL_M19)
@@ -120,8 +120,8 @@ if __name__ == "__main__":
     circuits = ["A", "A", "B", "B", "C", "C"]
     DIFF = 360 / 24
     for i, circuit in enumerate(circuits):
-        x_val = 34 * cosd(i * DIFF + DIFF / 2)
-        y_val = 34 * sind(i * DIFF + DIFF / 2)
+        x_val = 36 * cosd(i * DIFF + DIFF / 2)
+        y_val = 36 * sind(i * DIFF + DIFF / 2)
         add_label(x_val, y_val, COPPER, circ=circuit, turns=40)
 
     # Document saving
