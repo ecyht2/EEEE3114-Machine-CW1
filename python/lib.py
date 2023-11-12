@@ -17,8 +17,8 @@ WINE_DIR = "/usr/bin/wine"
 RPM = 1500                  # Mechanical RPM
 OMEGA = RPM * 360 / 60      # Mechanical °/sec
 DT = 1 / OMEGA              # Mechanical sec/°
-RPM_E = 24 * RPM            # Electrical RPM
-OMEGA_E = 24 * OMEGA        # Electrical °/sec
+F_E = 12 * RPM / 60         # Electrical Frequency
+OMEGA_E = 360 * F_E         # Electrical °/sec
 EDT = 1 / OMEGA_E           # Electrical sec/°
 
 
