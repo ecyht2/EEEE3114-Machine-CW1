@@ -38,7 +38,6 @@ def task_3(initial_angle: int, count: int, out: Queue):
         femm.mi_modifycircprop("B", 1, 20 * np.sin(np.radians(angle + 77 + 120)))
         femm.mi_modifycircprop("C", 1, 20 * np.sin(np.radians(angle + 77 - 120)))
         femm.mi_modifyboundprop("Sliding Boundary", 10, angle / 2 + 23.1)
-        # 6.6 + a * 13.2
 
         # Debug
         thread_logger.info("Angle %s", angle)
