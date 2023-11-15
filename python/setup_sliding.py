@@ -117,12 +117,12 @@ if __name__ == "__main__":
     add_label(56.25 * cosd(45), 56.25 * sind(45), IRON)
     # Windings/Slots
     # Middle Full
-    circuits = ["A", "A", "B", "B", "C", "C"]
+    circuits = [("B", 1), ("B", 1), ("C", -1), ("C", -1), ("A", 1), ("A", 1)]
     DIFF = 360 / 24
     for i, circuit in enumerate(circuits):
         x_val = 36 * cosd(i * DIFF + DIFF / 2)
         y_val = 36 * sind(i * DIFF + DIFF / 2)
-        add_label(x_val, y_val, COPPER, circ=circuit, turns=40)
+        add_label(x_val, y_val, COPPER, circ=circuit[0], turns=40 * circuit[1])
 
     # Document saving
     os.makedirs("../dist", exist_ok=True)
