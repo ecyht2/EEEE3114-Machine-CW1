@@ -2,6 +2,7 @@
 """Test script."""
 import csv
 import logging
+import multiprocessing
 import os
 from dataclasses import dataclass
 from multiprocessing import Process, Queue
@@ -10,12 +11,13 @@ import femm  # type: ignore
 import matplotlib.pyplot as plt
 import numpy as np
 
-from lib import femm_handler, DT, OMEGA
+from lib import DT, OMEGA, RPM, femm_handler
 
 
 @dataclass
 class TaskData:
     """The output data format for the collected data."""
+
     angle: float
     coggingtorque: float
     aflux: float
@@ -31,6 +33,7 @@ def task_1_2(initial_angle: int, count: int, out: Queue):
     :param count: The amount of times to rotate the rotor.
     :param out: The queue to output the collected data to.
     """
+    thread_logger = multiprocessing.get_logger()
     femm.mi_modifycircprop("A", 1, 0)
     femm.mi_modifycircprop("B", 1, 0)
     femm.mi_modifycircprop("C", 1, 0)
@@ -39,7 +42,7 @@ def task_1_2(initial_angle: int, count: int, out: Queue):
     for k in range(count):
         current_angle = initial_angle + k
         # Debug
-        logging.info("Angle: %s", current_angle)
+        thread_logger.info("Angle: %s", current_angle)
 
         femm.mi_modifyboundprop("Sliding Boundary", 10, current_angle)
         # Anlyzing
@@ -66,7 +69,7 @@ def task_1_2(initial_angle: int, count: int, out: Queue):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logger = multiprocessing.log_to_stderr(logging.INFO)
     queue: Queue = Queue()
     processes: list[Process] = []
     THREADS = 10
@@ -108,7 +111,10 @@ if __name__ == "__main__":
     vb = 4 * np.diff(bflux) / DT
     vc = 4 * np.diff(cflux) / DT
     td = tt[1:] / OMEGA - DT / 2
-    plt.plot(td, va, td, vb, td, vc)
+    plt.plot(td, va, label="Winding A")
+    plt.plot(td, vb, label="Winding B")
+    plt.plot(td, vc, label="Winding C")
+    plt.legend()
     plt.xlabel("Time, Seconds")
     plt.ylabel("Phase-to-Neutral Voltage")
     plt.title("Phase Voltage")
@@ -125,14 +131,14 @@ if __name__ == "__main__":
     plt.savefig("../dist/task_2_2.png")
 
     # Logging
-    logging.info("Cogging Torque: %s", coggingtorque)
-    logging.info("Flux A: %s", aflux)
-    logging.info("Flux B: %s", bflux)
-    logging.info("Flux C: %s", cflux)
-    logging.info("Va: %s", va)
-    logging.info("Vb: %s", vb)
-    logging.info("Vc: %s", vc)
-    logging.info("Vll: %s", vll)
+    logger.info("Cogging Torque: %s", coggingtorque)
+    logger.info("Flux A: %s", aflux)
+    logger.info("Flux B: %s", bflux)
+    logger.info("Flux C: %s", cflux)
+    logger.info("Va: %s", va)
+    logger.info("Vb: %s", vb)
+    logger.info("Vc: %s", vc)
+    logger.info("Vll: %s", vll)
 
     os.makedirs("../dist", exist_ok=True)
     with open("../dist/task_1.csv", "w", encoding="utf-8") as file:
@@ -156,6 +162,13 @@ if __name__ == "__main__":
     with open("../dist/task_1.txt", "w", encoding="utf-8") as file:
         output = f"Cogging Troque Period: {angle_period}"
         file.write(output)
-        logging.info(output)
+        logger.info(output)
+
+    # Finding Km
+    k_m = max([va.max(), vb.max(), vc.max()]) / (RPM * 2 * np.pi / 60)
+    with open("../dist/task_2.txt", "w", encoding="utf-8") as file:
+        output = f"Km: {k_m}"
+        file.write(output)
+        logger.info(output)
 
     plt.show()

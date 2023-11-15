@@ -96,39 +96,55 @@ if __name__ == "__main__":
         cflux[angle] = item.cflux
         coggingtorque[angle] = item.coggingtorque
 
-    plt.figure(1)
-    plt.plot(tt, coggingtorque)
-    plt.xlabel("Angle, °")
-    plt.ylabel("Cogging Torque, N*m")
-    plt.title("Cogging Torque")
-
-    plt.figure(2)
+    # Getting Task 2 data
     va = np.diff(aflux) / DT
     vb = np.diff(bflux) / DT
     vc = np.diff(cflux) / DT
     td = tt[1:] / OMEGA - DT / 2
-    plt.plot(td, va, td, vb, td, vc)
-    plt.xlabel("Time, Seconds")
-    plt.ylabel("Phase-to-Neutral Voltage")
-    plt.title("Phase Voltage")
-
-    plt.figure(3)
     vll = va - vc
-    plt.plot(td, vll)
-    plt.xlabel("Time, Seconds")
-    plt.ylabel("Line-to-Line Voltage")
-    plt.title("Line-to-Line Voltage")
-    plt.show()
 
+    # Writing Data
     os.makedirs("../dist", exist_ok=True)
+    # Task 1
     with open("../dist/task_1.csv", "w", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Angle", "Cogging Torque"])
         csv_array = np.transpose(np.array([tt, coggingtorque]))
         writer.writerows(csv_array)
 
+    # Task 2
     with open("../dist/task_2.csv", "w", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Time", "Va", "Vb", "Vc", "Vll"])
         csv_array = np.transpose(np.array([td, va, vb, vc, vll]))
         writer.writerows(csv_array)
+
+    # Task 1
+    plt.figure(1)
+    plt.plot(tt, coggingtorque)
+    plt.xlim(tt.min(), tt.max())
+    plt.xlabel("Angle, °")
+    plt.ylabel("Cogging Torque, N*m")
+    plt.title("Cogging Torque")
+
+    # Task 2
+    plt.figure(2)
+    plt.plot(td, va, label="Winding A")
+    plt.plot(td, vb, label="Winding B")
+    plt.plot(td, vc, label="Winding C")
+    # Task 2 Setup
+    plt.legend()
+    plt.xlim(td.min(), td.max())
+    plt.xlabel("Time, Seconds")
+    plt.ylabel("Phase-to-Neutral Voltage")
+    plt.title("Phase Voltage")
+
+    # Task 2 Vll
+    plt.figure(3)
+    plt.plot(td, vll)
+    plt.xlim(td.min(), td.max())
+    plt.xlabel("Time, Seconds")
+    plt.ylabel("Line-to-Line Voltage")
+    plt.title("Line-to-Line Voltage")
+
+    plt.show()
