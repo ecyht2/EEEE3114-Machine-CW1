@@ -87,10 +87,12 @@ if __name__ == "__main__":
     # Finding frequency
     fft = np.array(abs(np.fft.fft(dev_torque)))
     freq = np.fft.helper.fftfreq(dev_torque.size, EDT)
+    # Removing DC offset
+    fft[0] = 0
     index = np.argmax(fft)
     f = freq[index]
     ANGLE_PERIOD = 0
-    if f >= 0:
+    if f > 0:
         ANGLE_PERIOD = OMEGA_E * f**-1
     with open("../dist/task_3_ripple.txt", "w", encoding="utf-8") as file:
         output = f"Torque Ripple Period: {ANGLE_PERIOD}"
