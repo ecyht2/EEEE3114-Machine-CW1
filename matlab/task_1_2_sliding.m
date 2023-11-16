@@ -6,11 +6,6 @@ bflux = zeros(1, 360);
 cflux = zeros(1, 360);
 coggingtorque = zeros(1, 360);
 
-openfemm(1);
-opendocument('../dist/cw1_sliding.fem');
-
-mi_saveas('temp.fem');
-
 mi_modifycircprop('A', 1, 0);
 mi_modifycircprop('B', 1, 0);
 mi_modifycircprop('C', 1, 0);
