@@ -16,3 +16,4 @@ TEETH = 3.6;                 % The total angle of a teeth
 openfemm(1);
 opendocument('../dist/cw1_sliding.fem');
 mi_saveas('temp.fem');
+smartmesh(1);

@@ -9,7 +9,6 @@ coggingtorque = zeros(1, 360);
 mi_modifycircprop('A', 1, 0);
 mi_modifycircprop('B', 1, 0);
 mi_modifycircprop('C', 1, 0);
-smartmesh(1);
 
 for k = 0:359
     % Debug
