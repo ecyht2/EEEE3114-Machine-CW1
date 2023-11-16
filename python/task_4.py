@@ -12,7 +12,7 @@ import femm  # type: ignore
 import matplotlib.pyplot as plt
 import numpy as np
 
-from lib import femm_handler
+from lib import MIDDLE, SLOT, TEETH, femm_handler
 
 
 @dataclass
@@ -40,9 +40,9 @@ def task_4(current: float) -> TaskData:
     thread_logger = multiprocessing.get_logger()
     femm.smartmesh(1)
 
-    a = current * np.sin(np.radians(90))
-    b = current * np.sin(np.radians(90 + 120))
-    c = current * np.sin(np.radians(90 - 120))
+    a = current * np.sin(np.radians(0))
+    b = current * np.sin(np.radians(120))
+    c = current * np.sin(np.radians(-120))
 
     # Debug
     thread_logger.info("Current %s A", current)
@@ -53,33 +53,29 @@ def task_4(current: float) -> TaskData:
     femm.mi_modifycircprop("A", 1, a)
     femm.mi_modifycircprop("B", 1, b)
     femm.mi_modifycircprop("C", 1, c)
+    femm.mi_modifyboundprop("Sliding Boundary", 10, 60)
 
+    teeth_angle = np.radians((SLOT + TEETH) * 5)
     # Anlyzing
     femm.mi_analyze(1)
     femm.mi_loadsolution()
 
-    stator = np.zeros((2, 7), float)
-    for i in range(7):
-        teeth_angle = np.radians(i * 15 + 0.9)
-        stator[0, i] = mag(
-            femm.mo_getb(45 * np.cos(teeth_angle), 45 * np.sin(teeth_angle))
-        )
+    stator = np.zeros(2, float)
+    stator[0] = mag(
+        femm.mo_getb(46.5 * np.cos(teeth_angle), 46.5 * np.sin(teeth_angle))
+    )
 
-        stator[1, i] = mag(
-            femm.mo_getb(43 * np.cos(teeth_angle), 43 * np.sin(teeth_angle))
-        )
+    stator[1] = mag(femm.mo_getb(36 * np.cos(teeth_angle), 36 * np.sin(teeth_angle)))
 
-    magnet = np.zeros(46)
-    for mag_angle in range(30, 76):
-        magnet_x = 22 * np.cos(mag_angle)
-        magnet_y = 22 * np.sin(mag_angle)
-        magnet[mag_angle - 30] = mag(femm.mo_getb(magnet_x, magnet_y))
+    magnet_x = 22 * np.cos(np.radians(MIDDLE))
+    magnet_y = 22 * np.sin(np.radians(MIDDLE))
+    magnet = mag(femm.mo_getb(magnet_x, magnet_y))
 
     thread_logger.debug("Yoke Fluxes: %s", stator[0])
     thread_logger.debug("Teeth Fluxes: %s", stator[1])
     thread_logger.debug("Magnet Fluxes: %s", magnet)
 
-    output = TaskData(current, max(stator[0]), max(stator[1]), max(magnet))
+    output = TaskData(current, stator[0], stator[1], magnet)
 
     femm.mo_close()
 
@@ -87,7 +83,7 @@ def task_4(current: float) -> TaskData:
 
 
 if __name__ == "__main__":
-    logger = multiprocessing.log_to_stderr()
+    logger = multiprocessing.log_to_stderr(logging.INFO)
     queue: Queue = Queue()
 
     currents = np.arange(11) * 20
