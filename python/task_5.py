@@ -18,6 +18,7 @@ from lib import femm_handler
 @dataclass
 class TaskData:
     """The output data format for the collected data."""
+
     current: float
     torque: float
 
@@ -32,27 +33,25 @@ def task_5(current: float) -> TaskData:
     thread_logger = multiprocessing.get_logger()
     femm.smartmesh(1)
 
-    femm.mi_modifycircprop("A", 1, current * np.sin(np.radians(90)))
-    femm.mi_modifycircprop("B", 1, current * np.sin(np.radians(90 + 120)))
-    femm.mi_modifycircprop("C", 1, current * np.sin(np.radians(90 - 120)))
+    femm.mi_modifycircprop("A", 1, current * np.sin(np.radians(0)))
+    femm.mi_modifycircprop("B", 1, current * np.sin(np.radians(120)))
+    femm.mi_modifycircprop("C", 1, current * np.sin(np.radians(-120)))
 
     # Debug
     thread_logger.info("Current: %s A", current)
-    thread_logger.debug("A: %s A", current * np.sin(np.radians(90)))
-    thread_logger.debug("B: %s A", current * np.sin(np.radians(90 + 120)))
-    thread_logger.debug("C: %s A", current * np.sin(np.radians(90 - 120)))
+    thread_logger.debug("A: %s A", current * np.sin(np.radians(0)))
+    thread_logger.debug("B: %s A", current * np.sin(np.radians(120)))
+    thread_logger.debug("C: %s A", current * np.sin(np.radians(-120)))
 
-    dev_torque = np.zeros(360)
-    for deg in range(360):
-        femm.mi_modifyboundprop("Sliding Boundary", 10, deg)
-        thread_logger.info("%s A, %s°", current, deg)
-        # Anlyzing
-        femm.mi_analyze(1)
-        femm.mi_loadsolution()
-        dev_torque[deg] = femm.mo_gapintegral("Sliding Boundary", 0)
+    femm.mi_modifyboundprop("Sliding Boundary", 10, 60)
+    thread_logger.info("%s A, %s°", current, 60)
+    # Anlyzing
+    femm.mi_analyze(1)
+    femm.mi_loadsolution()
+    dev_torque = femm.mo_gapintegral("Sliding Boundary", 0)
 
     thread_logger.debug("Torque: %s", dev_torque)
-    output = TaskData(current, np.mean(dev_torque, 0))
+    output = TaskData(current, dev_torque)
 
     femm.mo_close()
 
@@ -60,11 +59,11 @@ def task_5(current: float) -> TaskData:
 
 
 if __name__ == "__main__":
-    logger = multiprocessing.log_to_stderr()
+    logger = multiprocessing.log_to_stderr(logging.INFO)
     queue: Queue = Queue()
 
     currents = np.arange(11) * 20
-    with Pool(11) as p:
+    with Pool(1) as p:
         torque: list[TaskData] = p.map(task_5, currents)
 
     torque.sort(key=lambda v: v.current)
@@ -72,9 +71,7 @@ if __name__ == "__main__":
 
     os.makedirs("../dist", exist_ok=True)
     with open("../dist/task_5.csv", "w", encoding="utf-8") as csv_file:
-        writer = csv.DictWriter(
-            csv_file, fieldnames=["current", "torque"]
-        )
+        writer = csv.DictWriter(csv_file, fieldnames=["current", "torque"])
         writer.writeheader()
         writer.writerows(map(dataclasses.asdict, torque))
 
@@ -83,8 +80,8 @@ if __name__ == "__main__":
 
     # Labels
     plt.xlabel("Current, A")
-    plt.ylabel("Mean Torque, N*m")
-    plt.title("Current vs Mean Torque")
+    plt.ylabel("Torque, N*m")
+    plt.title("Current vs Torque")
     plt.xlim(min(currents), max(currents))
     plt.xticks(currents)
     plt.savefig("../dist/task_5.png")
