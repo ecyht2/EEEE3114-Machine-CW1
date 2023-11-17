@@ -38,9 +38,9 @@ closefemm();
 
 figure(1)
 plot(tt, coggingtorque);
-xlabel("Angle, °");
-ylabel("Cogging Torque, N*m");
-title("Cogging Torque");
+xlabel("Rotation Angle, °");
+ylabel("Torque, Nm");
+title("Cogging Torque of the Machine");
 xlim([0 360]);
 saveas(gcf, "../dist/task_1.png")
 
@@ -54,18 +54,18 @@ plot(td, va);
 plot(td, vb);
 plot(td, vc);
 legend(["Winding A" "Winding B" "Winding C"]);
-xlabel("Time, Seconds");
-ylabel("Phase-to-Neutral Voltage");
-title("Phase Voltage");
+xlabel("Time, s");
+ylabel("Back EMF, V");
+title("Back EMF of the Machine");
 xlim([min(td) max(td)]);
 saveas(gcf, "../dist/task_2_1.png")
 
 figure(3)
 vll = va - vc;
 plot(td, vll)
-xlabel("Time, Seconds")
-ylabel("Line-to-Line Voltage")
-title("Line-to-Line Voltage")
+xlabel("Time, s")
+ylabel("Line-to-Line Back EMF, V")
+title("Line-to-Line Back EMF of the Machine")
 xlim([min(td) max(td)])
 saveas(gcf, "../dist/task_2_2.png")
 
