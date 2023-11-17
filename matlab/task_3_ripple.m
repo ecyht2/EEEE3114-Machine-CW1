@@ -8,7 +8,7 @@ for angle = load_angle
     mi_modifycircprop('A', 1, 20 * sind(angle + 77));
     mi_modifycircprop('B', 1, 20 * sind(angle + 77 + 120));
     mi_modifycircprop('C', 1, 20 * sind(angle + 77 - 120));
-    mi_modifyboundprop('Sliding Boundary', 10, angle / 2 + 23.1)
+    mi_modifyboundprop('Sliding Boundary', 10, angle / 2 + 23.1);
 
     % Debug
     fprintf("Angle %f\n", angle);
