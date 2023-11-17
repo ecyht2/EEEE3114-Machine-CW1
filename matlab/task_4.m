@@ -66,9 +66,9 @@ plot(currents, teeth);
 plot(currents, magnet);
 
 % Labels
-xlabel("Current, A");
-ylabel("Flux, T");
-title("Current vs Flux");
+xlabel("Peak Current, A");
+ylabel("Magnetic Field Density, T");
+title("Magnetic Field Density at Different Peak Current");
 xlim([min(currents), max(currents)]);
 xticks(currents);
 legend(["Yoke", "Teeth", "Magnet"]);
