@@ -26,9 +26,12 @@ task_3_ripple:
 task_4:
 	python3 task_4.py
 
+task_4_measurement:
+	python3 task_4_measurement.py
+
 task_5:
 	python3 task_5.py
 
-.PHONY: task_1_2 task_1_2_sliding rotation_torque task_3 task_3_ripple task_4 task_5
+.PHONY: task_1_2 task_1_2_sliding rotation_torque task_3 task_3_ripple task_4 task_4_measurement task_5
 
 # end
