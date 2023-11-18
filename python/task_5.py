@@ -56,6 +56,8 @@ def task_5(current: float) -> TaskData:
 
         femm.mo_close()
 
+    np.savetxt(f"../dist/task_5_{current}.csv", dev_torque)
+
     output = TaskData(current, np.mean(dev_torque))
     return output
 
