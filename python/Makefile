@@ -8,6 +8,10 @@
 test:
 	python3 test.py
 
+.PHONY: plot_data
+plot_data:
+	python3 plot_data.py
+
 task_1_2:
 	python3 task_1_2.py
 
