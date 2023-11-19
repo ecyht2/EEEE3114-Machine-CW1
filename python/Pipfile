@@ -11,9 +11,7 @@ matplotlib = "*"
 [dev-packages]
 python-lsp-server = "*"
 pylint = "*"
-rope = "*"
 pylsp-mypy = "*"
-autopep8 = "*"
 python-lsp-black = "*"
 
 [requires]
