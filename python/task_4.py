@@ -113,9 +113,9 @@ if __name__ == "__main__":
     plt.plot(currents, list(map(lambda v: v.magnet, flux)), label="Magnet", marker="o")
 
     # Labels
-    plt.xlabel("Current, A")
-    plt.ylabel("Flux, T")
-    plt.title("Current vs Flux")
+    plt.xlabel("Peak Current, A")
+    plt.ylabel("Magnetic Field Density, T")
+    plt.title("Magnetic Field Density at Different Peak Current")
     plt.xlim(min(currents), max(currents))
     plt.xticks(currents)
     plt.legend()

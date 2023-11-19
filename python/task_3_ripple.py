@@ -99,9 +99,9 @@ if __name__ == "__main__":
         logger.info(output)
 
     plt.plot(phase_angle, dev_torque)
-    plt.xlabel("Phase Angle, °")
-    plt.ylabel("Torque Developed, N*m")
-    plt.title("Torque Developed vs Phase Angle")
+    plt.xlabel("Load Angle, °")
+    plt.ylabel("Torque Developed, Nm")
+    plt.title("Torque Ripple of the Machine")
     plt.xlim(min(phase_angle), max(phase_angle))
     plt.savefig("../dist/task_3_ripple.png")
     plt.show()

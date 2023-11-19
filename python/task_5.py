@@ -83,9 +83,9 @@ if __name__ == "__main__":
     plt.plot(currents, list(map(lambda v: v.torque, torque)), marker="o")
 
     # Labels
-    plt.xlabel("Current, A")
-    plt.ylabel("Torque, N*m")
-    plt.title("Current vs Torque")
+    plt.xlabel("Peak Current, A")
+    plt.ylabel("Mean Torque, Nm")
+    plt.title("Mean Torque at Different Peak Current")
     plt.xlim(min(currents), max(currents))
     plt.xticks(currents)
     plt.savefig("../dist/task_5.png")

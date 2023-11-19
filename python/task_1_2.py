@@ -123,9 +123,9 @@ if __name__ == "__main__":
     plt.figure(1)
     plt.plot(tt, coggingtorque)
     plt.xlim(tt.min(), tt.max())
-    plt.xlabel("Angle, °")
-    plt.ylabel("Cogging Torque, N*m")
-    plt.title("Cogging Torque")
+    plt.xlabel("Rotation Angle, °")
+    plt.ylabel("Torque, Nm")
+    plt.title("Cogging Torque of the Machine")
 
     # Task 2
     plt.figure(2)
@@ -135,16 +135,16 @@ if __name__ == "__main__":
     # Task 2 Setup
     plt.legend()
     plt.xlim(td.min(), td.max())
-    plt.xlabel("Time, Seconds")
-    plt.ylabel("Phase-to-Neutral Voltage")
-    plt.title("Phase Voltage")
+    plt.xlabel("Time, s")
+    plt.ylabel("Back EMF, V")
+    plt.title("Back EMF of the Machine")
 
     # Task 2 Vll
     plt.figure(3)
     plt.plot(td, vll)
     plt.xlim(td.min(), td.max())
-    plt.xlabel("Time, Seconds")
-    plt.ylabel("Line-to-Line Voltage")
-    plt.title("Line-to-Line Voltage")
+    plt.xlabel("Time, s")
+    plt.ylabel("Line-to-Line Back EMF, V")
+    plt.title("Line-to-Line Back EMF of the Machine")
 
     plt.show()
