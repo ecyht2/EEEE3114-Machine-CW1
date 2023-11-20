@@ -91,9 +91,9 @@ if __name__ == "__main__":
         logger.info(output)
 
     plt.plot(phase_angle, dev_torque, marker="o")
-    plt.xlabel("Phase Angle, °")
-    plt.ylabel("Torque Developed, N*m")
-    plt.title("Torque Developed vs Phase Angle")
+    plt.xlabel("Load Angle, °")
+    plt.ylabel("Torque Developed, Nm")
+    plt.title("Torque Developed at Different Load Angle")
     plt.xlim(min(phase_angle), max(phase_angle))
     plt.savefig("../dist/task_3.png")
     plt.show()

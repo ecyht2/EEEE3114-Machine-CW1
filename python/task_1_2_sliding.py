@@ -100,9 +100,9 @@ if __name__ == "__main__":
 
     plt.figure(1)
     plt.plot(tt, coggingtorque)
-    plt.xlabel("Angle, °")
-    plt.ylabel("Cogging Torque, N*m")
-    plt.title("Cogging Torque")
+    plt.xlabel("Rotation Angle, °")
+    plt.ylabel("Torque, Nm")
+    plt.title("Cogging Torque of the Machine")
     plt.xlim(0, 360)
     plt.savefig("../dist/task_1.png")
 
@@ -115,18 +115,18 @@ if __name__ == "__main__":
     plt.plot(td, vb, label="Winding B")
     plt.plot(td, vc, label="Winding C")
     plt.legend()
-    plt.xlabel("Time, Seconds")
-    plt.ylabel("Phase-to-Neutral Voltage")
-    plt.title("Phase Voltage")
+    plt.xlabel("Time, s")
+    plt.ylabel("Back EMF, V")
+    plt.title("Back EMF of the Machine")
     plt.xlim(min(td), max(td))
     plt.savefig("../dist/task_2_1.png")
 
     plt.figure(3)
     vll = va - vc
     plt.plot(td, vll)
-    plt.xlabel("Time, Seconds")
-    plt.ylabel("Line-to-Line Voltage")
-    plt.title("Line-to-Line Voltage")
+    plt.xlabel("Time, s")
+    plt.ylabel("Line-to-Line Back EMF, V")
+    plt.title("Line-to-Line Back EMF of the Machine")
     plt.xlim(min(td), max(td))
     plt.savefig("../dist/task_2_2.png")
 
