@@ -1,7 +1,7 @@
 openfemm(1);
 opendocument('Antunes.FEM');
 
-mi_saveas('temp.fem')
+mi_saveas('temp.fem');
 
 mi_modifycircprop('A', 1, 0);
 mi_modifycircprop('B', 1, 0);
@@ -35,7 +35,7 @@ for(k = 0:n)
 	cflux = [cflux,circpropsC(3)];
 	mo_close();
 	if(mod(k, 100) == 0)
-		disp(sprintf('%i :: %i',k,n));
+		fprintf('%i :: %i',k,n);
 	end
 end 
  
