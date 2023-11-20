@@ -4,7 +4,7 @@ Coursework 1 for EEEE3114 machine coursework 1. This repository is split into tw
 
 ## Introduction
 
-This repository contains code to simulate a permanent magnet synchronous motor (PMSM). This is down by performing FEA (finite element analysis) using the [FEMM](https://www.femm.info/wiki/Download) software. The simulations are split into task specified in the `[EEEE3114- Design Exercise Handout.pdf]`.
+This repository contains code to simulate a permanent magnet synchronous motor (PMSM). This is down by performing FEA (finite element analysis) using the [FEMM](https://www.femm.info/wiki/Download) software. The simulations are split into task specified in the `EEEE3114- Design Exercise Handout.pdf`.
 
 Two report is also written to analyse the results of the simulation. The first report (part 1) analyse the results from task 1 to task 6. The second report (part 2) analyse the rest of the task. The report is written in LaTeX. The source code for the LaTeX documents can be found [here](https://github.com/ecyht2/EEEE3114-Electrical-Machines-Drive-Systems-and-Applications-CW1.git).
 
