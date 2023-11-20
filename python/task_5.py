@@ -33,28 +33,32 @@ def task_5(current: float) -> TaskData:
     thread_logger = multiprocessing.get_logger()
     femm.smartmesh(1)
 
-    femm.mi_modifycircprop("A", 1, current * np.sin(np.radians(0)))
-    femm.mi_modifycircprop("B", 1, current * np.sin(np.radians(120)))
-    femm.mi_modifycircprop("C", 1, current * np.sin(np.radians(-120)))
+    dev_torque = np.zeros(360, float)
+    for angle in range(360):
+        femm.mi_modifycircprop("A", 1, current * np.sin(np.radians(angle + 77)))
+        femm.mi_modifycircprop("B", 1, current * np.sin(np.radians(angle + 77 + 120)))
+        femm.mi_modifycircprop("C", 1, current * np.sin(np.radians(angle + 77 - 120)))
+        femm.mi_modifyboundprop("Sliding Boundary", 10, angle / 2 + 23.1)
 
-    # Debug
-    thread_logger.info("Current: %s A", current)
-    thread_logger.debug("A: %s A", current * np.sin(np.radians(0)))
-    thread_logger.debug("B: %s A", current * np.sin(np.radians(120)))
-    thread_logger.debug("C: %s A", current * np.sin(np.radians(-120)))
+        # Debug
+        thread_logger.info("Current: %s A", current)
+        thread_logger.info("Load Angle %s°", angle + 77)
+        thread_logger.debug("A: %s A", current * np.sin(np.radians(0)))
+        thread_logger.debug("B: %s A", current * np.sin(np.radians(120)))
+        thread_logger.debug("C: %s A", current * np.sin(np.radians(-120)))
 
-    femm.mi_modifyboundprop("Sliding Boundary", 10, 60)
-    thread_logger.info("%s A, %s°", current, 60)
-    # Anlyzing
-    femm.mi_analyze(1)
-    femm.mi_loadsolution()
-    dev_torque = femm.mo_gapintegral("Sliding Boundary", 0)
+        # Anlyzing
+        femm.mi_analyze(1)
+        femm.mi_loadsolution()
+        dev_torque[angle] = femm.mo_gapintegral("Sliding Boundary", 0)
 
-    thread_logger.debug("Torque: %s", dev_torque)
-    output = TaskData(current, dev_torque)
+        thread_logger.debug("Torque: %s", dev_torque[angle])
 
-    femm.mo_close()
+        femm.mo_close()
 
+    np.savetxt(f"../dist/task_5_{current}.csv", dev_torque)
+
+    output = TaskData(current, np.mean(dev_torque))
     return output
 
 
@@ -63,7 +67,7 @@ if __name__ == "__main__":
     queue: Queue = Queue()
 
     currents = np.arange(11) * 20
-    with Pool(1) as p:
+    with Pool(11) as p:
         torque: list[TaskData] = p.map(task_5, currents)
 
     torque.sort(key=lambda v: v.current)

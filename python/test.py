@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """Test script of coursework"""
-import csv
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -11,15 +9,7 @@ def get_data(file_path: str) -> np.ndarray:
 
     :param file_path: The file path of the CSV file.
     """
-    with open(file_path, encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        output = np.fromiter(reader, dict)
-
-    for item in output:
-        for key in item.keys():
-            item[key] = float(item.get(key))
-
-    return output
+    return np.genfromtxt(file_path, skip_header=True, delimiter=",")
 
 
 def plot_graph(x: list, y: list):
