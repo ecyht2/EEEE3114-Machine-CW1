@@ -24,6 +24,7 @@ MIDDLE = 52.5               # Angle of the middle of the magnet
 SLOT_ANGLE = 15             # Angle between each slot
 SLOT = 11.4                 # The total angle of a slot
 TEETH = 3.6                 # The total angle of a teeth
+I_PEAK = 20                 # Rated current
 
 
 def setup_femm() -> str:
