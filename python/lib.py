@@ -10,20 +10,43 @@ from typing import Any, Callable
 
 import femm  # type: ignore
 import numpy as np
+import matplotlib.pyplot as plt
 
 FEMM_DIR = "/home/user/.local/share/wineprefixes/default/drive_c/femm42/bin/"
 WINE_DIR = "/usr/bin/wine"
 
-RPM = 1500                  # Mechanical RPM
-OMEGA = RPM * 360 / 60      # Mechanical °/sec
-DT = 1 / OMEGA              # Mechanical sec/°
-F_E = 2 * RPM / 60          # Electrical Frequency
-OMEGA_E = 360 * F_E         # Electrical °/sec
-EDT = 1 / OMEGA_E           # Electrical sec/°
-MIDDLE = 52.5               # Angle of the middle of the magnet
-SLOT_ANGLE = 15             # Angle between each slot
-SLOT = 11.4                 # The total angle of a slot
-TEETH = 3.6                 # The total angle of a teeth
+RPM = 1500  # Mechanical RPM
+OMEGA = RPM * 360 / 60  # Mechanical °/sec
+DT = 1 / OMEGA  # Mechanical sec/°
+F_E = 2 * RPM / 60  # Electrical Frequency
+OMEGA_E = 360 * F_E  # Electrical °/sec
+EDT = 1 / OMEGA_E  # Electrical sec/°
+MIDDLE = 52.5  # Angle of the middle of the magnet
+SLOT_ANGLE = 15  # Angle between each slot
+SLOT = 11.4  # The total angle of a slot
+TEETH = 3.6  # The total angle of a teeth
+I_PEAK = 20  # Rated current
+
+
+def get_data(file_path: str, skip_header=True, delimiter=",", **kwargs) -> np.ndarray:
+    """Gets the data from a CSV file.
+
+    :param file_path: The file path of the CSV file.
+    :param kwargs: Additional keyword args to add.
+    """
+    return np.genfromtxt(
+        file_path, skip_header=skip_header, delimiter=delimiter, **kwargs
+    )
+
+
+def plot_graph(x: list, y: list):
+    """Plots the data and shows the graph.
+
+    :param x: The items on the x-axis.
+    :param y: The items on the y-axis.
+    """
+    plt.plot(x, y)
+    plt.show()
 
 
 def setup_femm() -> str:
@@ -98,7 +121,9 @@ def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_D
                 femm.closefemm()
                 logger.debug("Exiting FEMM")
                 return value
+
         return wrapper
+
     return custom_handler
 
 
