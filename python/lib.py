@@ -38,7 +38,7 @@ def get_data(file_path: str, **kwargs) -> np.ndarray:
 
 
 def plot_graph(x: list, y: list):
-    """Gets the data from a CSV file.
+    """Plots the data and shows the graph.
 
     :param x: The items on the x-axis.
     :param y: The items on the y-axis.
