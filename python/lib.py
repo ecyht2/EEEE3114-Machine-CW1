@@ -28,12 +28,13 @@ TEETH = 3.6  # The total angle of a teeth
 I_PEAK = 20  # Rated current
 
 
-def get_data(file_path: str) -> np.ndarray:
+def get_data(file_path: str, **kwargs) -> np.ndarray:
     """Gets the data from a CSV file.
 
     :param file_path: The file path of the CSV file.
+    :param kwargs: Additional keyword args to add.
     """
-    return np.genfromtxt(file_path, skip_header=True, delimiter=",")
+    return np.genfromtxt(file_path, skip_header=True, delimiter=",", **kwargs)
 
 
 def plot_graph(x: list, y: list):
