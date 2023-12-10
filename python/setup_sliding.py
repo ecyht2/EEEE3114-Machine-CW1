@@ -106,7 +106,7 @@ if __name__ == "__main__":
     add_label(16.25 * cosd(45), 16.25 * sind(45), STEEL_M19, group=1)
     # Air Gap
     add_label(24.8 * cosd(45), 24.8 * sind(45), AIR)
-    add_label(22 * cosd(15), 22 * sind(15), AIR)
+    add_label(24.15 * cosd(15), 24.15 * sind(15), AIR)
     # Magnets
     x_val = 22 * cosd(52.5)
     y_val = 22 * sind(52.5)
