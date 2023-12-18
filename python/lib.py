@@ -6,7 +6,7 @@ import shutil
 import tempfile
 from functools import wraps
 from multiprocessing import Process, Queue
-from typing import Any, Callable
+from typing import Any, Callable, TypeVar, ParamSpec
 
 import femm  # type: ignore
 import numpy as np
@@ -26,6 +26,9 @@ SLOT_ANGLE = 15  # Angle between each slot
 SLOT = 11.4  # The total angle of a slot
 TEETH = 3.6  # The total angle of a teeth
 I_PEAK = 20  # Rated current
+
+FEMMHandlerP = ParamSpec("FEMMHandlerP")
+FEMMHandlerT = TypeVar("FEMMHandlerT")
 
 
 def get_data(file_path: str, skip_header=True, delimiter=",", **kwargs) -> np.ndarray:
@@ -81,7 +84,11 @@ def extract_queue(queue: Queue) -> np.ndarray:
     return array
 
 
-def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR):
+def femm_handler(
+    document: str, *, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_DIR
+) -> Callable[
+    [Callable[FEMMHandlerP, FEMMHandlerT]], Callable[FEMMHandlerP, FEMMHandlerT]
+]:
     """Function decorator to handle FEMM in a seperate instance.
 
     :param document: The document to open in FEMM.
@@ -94,7 +101,9 @@ def femm_handler(document: str, femm_dir: str = FEMM_DIR, wine_dir: str = WINE_D
     logger.debug("FEMM Directory: %s", femm_dir)
     logger.debug("Using wine binary: %s", wine_dir)
 
-    def custom_handler(func: Callable):
+    def custom_handler(
+        func: Callable[FEMMHandlerP, FEMMHandlerT]
+    ) -> Callable[FEMMHandlerP, FEMMHandlerT]:
         @wraps(func)
         def wrapper(*args, **kwargs):
             os.environ["WINEDEBUG"] = "-all"
