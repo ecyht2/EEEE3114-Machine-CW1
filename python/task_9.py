@@ -273,7 +273,7 @@ if __name__ == "__main__":
             back_emf = 4 * np.diff(data.emf, axis=0) / DT
             processed_data[index] = [
                 data.pitch_factor,
-                abs(data.airgap_flux).max(),
+                abs(data.airgap_flux).mean(),
                 abs(data.torque).max(),
                 abs(back_emf).max(),
             ]
