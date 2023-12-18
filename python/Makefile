@@ -12,6 +12,15 @@ test:
 plot_data:
 	python3 plot_data.py
 
+# Setup
+.PHONY: setup setup_sliding
+
+setup: setup.py
+	python3 setup.py
+
+setup_sliding: setup_sliding.py
+	python3 setup_sliding.py
+
 task_1_2:
 	python3 task_1_2.py
 
