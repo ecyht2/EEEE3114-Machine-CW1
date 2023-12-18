@@ -26,6 +26,7 @@ SLOT_ANGLE = 15  # Angle between each slot
 SLOT = 11.4  # The total angle of a slot
 TEETH = 3.6  # The total angle of a teeth
 I_PEAK = 20  # Rated current
+SLOT_OPENING_FACTOR = 2.28 / 9.66  # Slot opening factor
 
 FEMMHandlerP = ParamSpec("FEMMHandlerP")
 FEMMHandlerT = TypeVar("FEMMHandlerT")
