@@ -303,24 +303,30 @@ if __name__ == "__main__":
     tq_dev = processed_data[:, 2]
     back_emf = processed_data[:, 3]
     plt.figure()
-    plt.title("Rated Torque")
+    plt.title("Rated Torque at Different Magnet Pitch Factor")
     plt.plot(pf, tq_dev)
     plt.xlim(pf.min(), pf.max())
     plt.xticks(pf)
+    plt.xlabel("Pitch Factor")
+    plt.ylabel("Rated Torque, Nm")
     plt.savefig("../dist/task_9_torque.png")
 
     plt.figure()
-    plt.title("Back EMF")
+    plt.title("Back EMF at Different Magnet Pitch Factor")
     plt.plot(pf, back_emf)
     plt.xlim(pf.min(), pf.max())
     plt.xticks(pf)
+    plt.xlabel("Pitch Factor")
+    plt.ylabel("Back EMF, V")
     plt.savefig("../dist/task_9_back_emf.png")
 
     plt.figure()
-    plt.title("Airgap Flux Density")
+    plt.title("Airgap Flux Density at Different Magnet Pitch Factor")
     plt.plot(pf, airgap_flux)
     plt.xlim(pf.min(), pf.max())
     plt.xticks(pf)
+    plt.xlabel("Pitch Factor")
+    plt.ylabel("Airgap Flux Density, T")
     plt.savefig("../dist/task_9_airgap_flux.png")
 
     logger.info("Saving Data")
