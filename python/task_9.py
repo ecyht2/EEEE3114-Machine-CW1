@@ -180,6 +180,16 @@ def task_9(pitch_factor: float) -> TaskData:
     draw_magnet(pitch_factor)
     femm.smartmesh(1)
 
+    # Saving Images
+    os.makedirs("../dist/task_9_models/", exist_ok=True)
+    thread_logger.info("Saving Images")
+    img_name = f"../dist/task_9_models/task_9_{round(pitch_factor, 2)}"
+    thread_logger.debug("File Name: %s", img_name)
+    femm.mi_savebitmap(f"{img_name}.bmp")
+    thread_logger.info("Converting Image into PNG")
+    img = plt.imread(f"{img_name}.bmp")
+    plt.imsave(f"{img_name}.png", img)
+
     # Modifying properties
     thread_logger.info("Getting Flux and Torque")
     femm.mi_modifyboundprop("Sliding Boundary", 10, 0)
