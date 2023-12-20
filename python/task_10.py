@@ -198,6 +198,21 @@ def main():
                 )
             )
 
+    angles = np.arange(0, 360)
+    out_data = np.fromiter(
+        zip(angles, *dev_torque, *cogging_torque), np.dtype((float, 21)), 360
+    )
+    with open("../dist/task_10_raw.csv", "w", encoding="utf-8") as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(
+            (
+                "Load Angle",
+                *tuple(f"Ripple {round(factor, 2)}" for factor in slot_factor),
+                *tuple(f"Cogging {round(factor, 2)}" for factor in slot_factor),
+            )
+        )
+        csv_writer.writerows(out_data)
+
     logger.info("Saving Data")
     np.savez(
         "../dist/task_10.npz",
