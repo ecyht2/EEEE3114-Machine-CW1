@@ -22,7 +22,7 @@ class TaskData(NamedTuple):
 
 @femm_handler("../dist/cw1_sliding.fem")
 def task_3(initial_angle: int, count: int, out: Queue):
-    """Function to get data for Task 1 and 2.
+    """Function to get data for Task 3.
 
     :param initial_angle: Initial phase angle of the current.
     :param count: The amount of times to rotate the phase angle.

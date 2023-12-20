@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Script for task 3."""
+"""Script for task 8."""
 import csv
 import logging
 import multiprocessing
@@ -21,8 +21,8 @@ class TaskData(NamedTuple):
 
 
 @femm_handler("../dist/cw1_sliding.fem")
-def task_3(initial_angle: int, count: int, out: Queue):
-    """Function to get data for Task 1 and 2.
+def task_8(initial_angle: int, count: int, out: Queue):
+    """Function to get data for Task 8.
 
     :param initial_angle: Initial phase angle of the current.
     :param count: The amount of times to rotate the phase angle.
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     COUNT = round(360 / THREADS)
 
     for i in range(THREADS):
-        p = Process(target=task_3, args=(i * COUNT, COUNT, queue))
+        p = Process(target=task_8, args=(i * COUNT, COUNT, queue))
         p.start()
         processes.append(p)
 
@@ -77,14 +77,14 @@ if __name__ == "__main__":
     logger.info("Torque Developed: %s", dev_torque)
 
     os.makedirs("../dist", exist_ok=True)
-    with open("../dist/task_3.csv", "w", encoding="utf-8") as csv_file:
+    with open("../dist/task_8.csv", "w", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(["Load Angle", "Torque Developed"])
         csv_array = np.transpose(np.array([phase_angle, dev_torque]))
         writer.writerows(csv_array)
 
     # Finding frequency
-    with open("../dist/task_3.txt", "w", encoding="utf-8") as file:
+    with open("../dist/task_8.txt", "w", encoding="utf-8") as file:
         max_phase = dev_torque.argmax()
         output = f"Max Phase: {max_phase}"
         file.write(output)
@@ -95,5 +95,5 @@ if __name__ == "__main__":
     plt.ylabel("Torque Developed, Nm")
     plt.title("Torque Developed at Different Load Angle")
     plt.xlim(min(phase_angle), max(phase_angle))
-    plt.savefig("../dist/task_3.png")
+    plt.savefig("../dist/task_8.png")
     plt.show()
