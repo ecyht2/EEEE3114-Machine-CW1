@@ -218,7 +218,7 @@ def plot_data(
     logger.info("Plotting Overall Torque")
     plt.figure()
     plt.plot(slot_factor, mean_torque)
-    plt.title("Overall Torque of Different Slot Opening Factor")
+    plt.title("Overall Torque at Different Slot Opening Factor")
     plt.xlim(slot_factor.min(), slot_factor.max())
     plt.xticks(slot_factor)
     plt.xlabel("Slot Opening Factor")
