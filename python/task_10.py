@@ -161,14 +161,28 @@ def main():
     with open("../dist/task_10.csv", "w", encoding="utf-8") as file:
         csv_writer = csv.writer(file)
 
-        csv_writer.writerow(("Slot Opening Factor", "Overall Torque"))
+        csv_writer.writerow(
+            (
+                "Slot Opening Factor",
+                "Overall Torque",
+                "Developed Torque Amplitude",
+                "Cogging Torque Amplitude",
+            )
+        )
 
         for i, data in enumerate(data_collected):
             dev_torque[i] = data.dev_torque
             cogging_torque[i] = data.cogging_troque
             mean_torque[i] = abs(data.dev_torque).mean()
 
-            csv_writer.writerow((data.opening_factor, mean_torque[i]))
+            csv_writer.writerow(
+                (
+                    data.opening_factor,
+                    mean_torque[i],
+                    data.dev_torque.max() - data.dev_torque.mean(),
+                    data.cogging_troque.max() - data.cogging_troque.mean(),
+                )
+            )
 
     logger.info("Saving Data")
     np.savez(
