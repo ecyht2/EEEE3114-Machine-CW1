@@ -87,6 +87,16 @@ def task_10(opening_factor: float) -> TaskData:
     change_slot_opening(opening_factor)
     femm.smartmesh(1)
 
+    # Saving Images
+    os.makedirs("../dist/task_10_models/", exist_ok=True)
+    file_name = f"../dist/task_10_models/task_10_{round(opening_factor, 2)}"
+    thread_logger.debug("File Name: %s", file_name)
+    thread_logger.info("Saving Images")
+    femm.mi_savebitmap(f"{file_name}.bmp")
+    thread_logger.info("Converting Image into PNG")
+    img = plt.imread(f"{file_name}.bmp")
+    plt.imsave(f"{file_name}.png", img)
+
     thread_logger.info("Getting Torque Ripple and Overall Torque")
     dev_torque = np.zeros(360, float)
     for angle in range(360):
@@ -133,6 +143,10 @@ def task_10(opening_factor: float) -> TaskData:
 
         # Setting up for next cycle
         femm.mo_close()
+
+    # Saving Model
+    thread_logger.info("Saving Model")
+    femm.mi_saveas(f"{file_name}.fem")
 
     return TaskData(opening_factor, dev_torque, cogging_torque)
 
