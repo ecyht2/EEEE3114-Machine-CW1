@@ -53,12 +53,15 @@ task_5:
 task_7: task_7.py
 	python3 task_7.py
 
+task_8: task_8.py
+	python3 task_8.py
+
 task_9:
 	python3 task_9.py
 
 task_10: task_10.py
 	python3 task_10.py
 
-.PHONY: task_7 task_9 task_10
+.PHONY: task_7 task_8 task_9 task_10
 
 # end
