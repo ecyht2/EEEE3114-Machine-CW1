@@ -56,7 +56,7 @@ task_7: task_7.py
 task_8: task_8.py
 	python3 task_8.py
 
-task_9:
+task_9: task_9.py
 	python3 task_9.py
 
 task_10: task_10.py
