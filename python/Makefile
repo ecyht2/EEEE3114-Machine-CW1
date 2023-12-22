@@ -4,10 +4,12 @@
 # @file
 # @version 0.1
 
+# Misc
 .PHONY: test
 test:
 	python3 test.py
 
+# Part 1
 .PHONY: plot_data
 plot_data:
 	python3 plot_data.py
@@ -46,5 +48,11 @@ task_5:
 	python3 task_5.py
 
 .PHONY: task_1_2 task_1_2_sliding rotation_torque task_3 task_3_ripple task_4 task_4_measurement task_5
+
+# Part 2
+task_7: task_7.py
+	python3 task_7.py
+
+.PHONY: task_7
 
 # end
