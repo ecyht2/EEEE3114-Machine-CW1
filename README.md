@@ -35,4 +35,6 @@ This project uses [Pipenv](https://pipenv.pypa.io/en/latest/) to manage the depe
 
 ### Matlab
 
-All the functions used are defined in MATLAB. No other requirements are needed except for the latest version of [MATLAB](https://www.mathworks.com/products/matlab.html).
+The latest version of [MATLAB](https://www.mathworks.com/products/matlab.html) is required.
+
+The scripts also make use of the [Image Processing Toolbox](https://www.mathworks.com/products/image.html) make sure the toolbox is installed.
