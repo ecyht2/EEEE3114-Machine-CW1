@@ -20,7 +20,7 @@ class TaskData:
 
     opening_factor: float
     dev_torque: np.ndarray
-    cogging_troque: np.ndarray
+    cogging_torque: np.ndarray
 
 
 def change_slot_opening(opening_factor: float):
@@ -186,7 +186,7 @@ def main():
 
         for i, data in enumerate(data_collected):
             dev_torque[i] = data.dev_torque
-            cogging_torque[i] = data.cogging_troque
+            cogging_torque[i] = data.cogging_torque
             mean_torque[i] = abs(data.dev_torque).mean()
 
             csv_writer.writerow(
@@ -194,7 +194,7 @@ def main():
                     data.opening_factor,
                     mean_torque[i],
                     data.dev_torque.max() - data.dev_torque.mean(),
-                    data.cogging_troque.max() - data.cogging_troque.mean(),
+                    data.cogging_torque.max() - data.cogging_torque.mean(),
                 )
             )
 
