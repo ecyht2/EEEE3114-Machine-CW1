@@ -121,13 +121,25 @@ csv_data = table(slot_factor', mean_torque',...
     'Cogging Torque Amplitude'});
 writetable(csv_data, "../dist/task_10.csv");
 
+angle = 0:359;
+data_names{2 * length(slot_factor) + 1} = '';
+data_names{1} = 'Load Angle';
+for i = 1:length(slot_factor)
+    data_names{i + 1} = sprintf('Ripple %.2f', slot_factor(i));
+    data_names{i + length(slot_factor) + 1} = sprintf('Cogging %.2f', ...
+        slot_factor(i));
+end
+raw_data = array2table([angle' dev_torque' cogging_torque'], ...
+    'VariableNames', data_names);
+writetable(raw_data, "../dist/task_10_raw.csv");
+
+% Saving Data
 fprintf("Saving Data\n");
 save("../dist/task_10.mat");
 
 % Plotting Data
 fprintf("Plotting Data\n")
 [~, max_index] = max(mean_torque);
-angle = 0:359;
 
 % Overall Torque
 fprintf("Plotting Overall Torque\n");
