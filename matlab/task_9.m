@@ -24,7 +24,7 @@ for pf = 1:length(PITCH_FACTOR)
 
     % Saving Images
     mkdir("../dist/task_9_models/");
-    file_name = sprintf("../dist/task_9_models/task_9_%f", round(pitch_factor, 2));
+    file_name = sprintf("../dist/task_9_models/task_9_%.2f", round(pitch_factor, 2));
     fprintf("File Name: %s\n", file_name);
     fprintf("Saving Images\n");
     mi_savebitmap(sprintf('%s.bmp', file_name));
