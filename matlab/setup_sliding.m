@@ -31,41 +31,41 @@ mi_addcircprop('C', 0, 1);
 mi_addboundprop('Boundary');
 mi_selectarcsegment(62.5, 0);
 mi_setarcsegmentprop(5, 'Boundary', 0, 1);
-mi_clearselected()
+mi_clearselected();
 % Sliding Boundary
-mi_addboundprop('Sliding Boundary', 0, 0, 0, 0, 0, 0, 0, 0, 7)
-mi_selectarcsegment(24.7, 0)
-mi_selectarcsegment(24.3, 0)
-mi_setarcsegmentprop(5, 'Sliding Boundary', 0, 1)
-mi_clearselected()
+mi_addboundprop('Sliding Boundary', 0, 0, 0, 0, 0, 0, 0, 0, 7);
+mi_selectarcsegment(24.7, 0);
+mi_selectarcsegment(24.3, 0);
+mi_setarcsegmentprop(5, 'Sliding Boundary', 0, 1);
+mi_clearselected();
 % Moving Boundary
 % Rotor
-add_boundary([6.25, 16.25], 'Rotor Boundary %d')
+add_boundary([6.25, 16.25], 'Rotor Boundary %d');
 % Air Gap 1
-add_boundary([22, 25], 'Air Gap %d')
+add_boundary([22, 25], 'Air Gap %d');
 % Air Gap 2
 % Stator Boundary
-add_boundary([46.5, 56.25], 'Stator Boundary %d')
+add_boundary([46.5, 56.25], 'Stator Boundary %d');
 % Setting Rotor Group
-mi_selectcircle(0, 0, 24.5, 4)
-mi_setgroup(1)
+mi_selectcircle(0, 0, 24.5, 4);
+mi_setgroup(1);
 
 % Adding Materials
 % Rotor Inner
-add_label(6.25 * cosd(45), 6.25 * sind(45), STEEL_1018, group=1)
+add_label(6.25 * cosd(45), 6.25 * sind(45), STEEL_1018, group=1);
 % Rotor Outer
-add_label(16.25 * cosd(45), 16.25 * sind(45), STEEL_M19, group=1)
+add_label(16.25 * cosd(45), 16.25 * sind(45), STEEL_M19, group=1);
 % Air Gap
-add_label(24.8 * cosd(45), 24.8 * sind(45), AIR)
-add_label(24.15 * cosd(15), 24.15 * sind(15), AIR)
+add_label(24.8 * cosd(45), 24.8 * sind(45), AIR);
+add_label(24.15 * cosd(15), 24.15 * sind(15), AIR);
 % Magnets
 x_val = 22 * cosd(52.5);
 y_val = 22 * sind(52.5);
-add_label(x_val, y_val, N42, magdir=45, group=1)
+add_label(x_val, y_val, N42, magdir=45, group=1);
 % Stator Radius
-add_label(46.5 * cosd(45), 46.5 * sind(45), STEEL_M19)
+add_label(46.5 * cosd(45), 46.5 * sind(45), STEEL_M19);
 % Outer Cage Radius
-add_label(56.25 * cosd(45), 56.25 * sind(45), IRON)
+add_label(56.25 * cosd(45), 56.25 * sind(45), IRON);
 % Windings/Slots
 % Middle Full
 circuits = ['B' 1; 'B' 1; 'C' -1; 'C' -1; 'A' 1; 'A' 1];
