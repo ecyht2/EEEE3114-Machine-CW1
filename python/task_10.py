@@ -193,8 +193,8 @@ def main():
                 (
                     data.opening_factor,
                     mean_torque[i],
-                    data.dev_torque.max() - data.dev_torque.mean(),
-                    data.cogging_torque.max() - data.cogging_torque.mean(),
+                    abs(data.dev_torque).max() - data.dev_torque.mean(),
+                    abs(data.cogging_torque).max() - data.cogging_torque.mean(),
                 )
             )
 
